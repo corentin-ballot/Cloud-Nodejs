@@ -9,31 +9,55 @@
 <div class="markdown-body" style="max-width: 1000px; margin: auto;">
     <h1>Documentation</h1>
 
-    <nav class="api_navigation"></nav>
+    <div class="api_container">
+        <nav class="api_navigation"></nav>
 
-    <section class="api_section">{% include "cloud/api/browse.html" %}</section>
-    <hr>
-    <section class="api_section">{% include "cloud/api/downloadfile.html" %}</section>
-    <hr>
-    <section class="api_section">{% include "cloud/api/uploadfile.html" %}</section>
-    <hr>
-    <section class="api_section">{% include "cloud/api/renamefile.html" %}</section>
-    <hr>
+        <div class="api_sections">
+            <section class="api_sections_item">{% include "cloud/api/browse.html" %}</section>
+            <hr>
+            <section class="api_sections_item">{% include "cloud/api/downloadfile.html" %}</section>
+            <hr>
+            <section class="api_sections_item">{% include "cloud/api/uploadfile.html" %}</section>
+            <hr>
+            <section class="api_sections_item">{% include "cloud/api/renamefile.html" %}</section>
+            <hr>
+        </div>
+    </div>
 
     <style>
-        .api_section {
+        .api_sections {
+            overflow: hidden;
+        }
+
+        .api_sections_item {
             background-color: #fbfdff;
             border-radius: 3px;
             padding: 24px;
         }
 
-        .api_section h2 {
+        .api_sections_item h2 {
             margin-top: 0;
+            position: sticky;
+            top: 0;
+        }
+
+        .api_container {
+            display: flex;
+            max-width: 100%;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .api_navigation {
+            border: solid 2px black;
+            border-radius: 3px;
+            position: sticky;
+            top: 0;
         }
     </style>
 
     <script>
-        var sections_titles = document.querySelectorAll(".api_section h2");
+        var sections_titles = document.querySelectorAll(".api_sections_item h2");
         var navigation = document.querySelector(".api_navigation");
 
         var list = document.createElement('ul');

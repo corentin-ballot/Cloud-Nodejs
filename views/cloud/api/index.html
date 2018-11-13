@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="https://sindresorhus.com/github-markdown-css/github-markdown.css">
+<link rel="stylesheet" href="/cloud/api/cloud_api_layout.css">
 {% endblock %}
 
 {% block body %}
@@ -20,38 +21,7 @@
         </div>
     </div>
 
-    <style>
-        .api_sections {
-            overflow: hidden;
-        }
-
-        .api_sections_item {
-            background-color: #fbfdff;
-            border-radius: 3px;
-            padding: 24px;
-        }
-
-        .api_sections_item h2 {
-            margin-top: 0;
-            position: sticky;
-            top: 0;
-        }
-
-        .api_container {
-            display: flex;
-            max-width: 100%;
-            align-items: flex-start;
-            position: relative;
-        }
-
-        .api_navigation {
-            border: solid 2px black;
-            border-radius: 3px;
-            position: sticky;
-            top: 0;
-        }
-    </style>
-
+    <!-- Generate nav using .api_sections_item h2 elements -->
     <script>
         var sections_titles = document.querySelectorAll(".api_sections_item h2");
         var navigation = document.querySelector(".api_navigation");

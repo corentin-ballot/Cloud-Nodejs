@@ -41,5 +41,5 @@ body {
 .content {
     flex-grow: 1;
     overflow: auto;
-    padding: 8px;
+    /* padding: 8px; */
 }

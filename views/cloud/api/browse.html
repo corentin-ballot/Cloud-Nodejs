@@ -7,7 +7,7 @@
 \ \ \ \ {"name":"doc","url":"/api/doc","mtime":"2018-11-06T08:20:54.747Z","size":0,"type":"dir"},
 \ \ \ \ {"name":"index.html","url":"/api/index.html","mtime":"2018-11-06T08:20:54.747Z","size":283,"type":"file"}
 ]'} %}
-{% set api_component_error_response = [] %}
+{% set api_component_error_response = [{code: '404', content: '[]'},{code: '403', content: '[]'}] %}
 {% set api_component_sample_call = 'fetch("/api/cloud/browse", {
 \ \ \ \ method: "GET",
 \ \ \ \ body: JSON.stringify({ path: "/api" })

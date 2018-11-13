@@ -1,0 +1,14 @@
+{% set api_component_name = 'downloadfile' %}
+{% set api_component_description = 'Télécharge le fichier.' %}
+{% set api_component_endpoint = '/api/cloud/downloadfile' %}
+{% set api_component_methods = ['GET'] %}
+{% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path' }], optional : []} %}
+{% set api_component_success_response = {code: '200', content: ''} %}
+{% set api_component_error_response = [] %}
+{% set api_component_sample_call = 'fetch("/api/cloud/downloadfile", {
+\ \ \ \ method: "GET",
+\ \ \ \ body: JSON.stringify({ fileurl: "/api/index.html" })
+})' %}
+{% set api_component_notes = [] %}
+
+{% extends "cloud/api/api_layout.html" %}

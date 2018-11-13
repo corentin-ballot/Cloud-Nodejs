@@ -1,0 +1,15 @@
+{% set api_component_name = 'renamefile' %}
+{% set api_component_description = 'Change le chemin d\'un fichier/dossier.' %}
+{% set api_component_endpoint = '/api/cloud/renamefile' %}
+{% set api_component_methods = ['GET'] %}
+{% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path'}, {'name': 'newurl', 'type': 'path' }],
+optional : []} %}
+{% set api_component_success_response = {code: '200', content: ''} %}
+{% set api_component_error_response = [] %}
+{% set api_component_sample_call = 'fetch("/api/cloud/renamefile", {
+\ \ \ \ method: "GET",
+\ \ \ \ body: JSON.stringify({fileurl: "/doc/index.html", newurl: "/doc/api/index.html" })
+})' %}
+{% set api_component_notes = [] %}
+
+{% extends "cloud/api/api_layout.html" %}

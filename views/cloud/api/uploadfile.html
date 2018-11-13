@@ -1,0 +1,19 @@
+{% set api_component_name = 'uploadfile' %}
+{% set api_component_description = 'Upload le fichier.' %}
+{% set api_component_endpoint = '/api/cloud/uploadfile' %}
+{% set api_component_methods = ['POST'] %}
+{% set api_component_params = {required : [{'name': 'file', 'type': 'file' },{'name': 'path', 'type': 'path' }],
+optional : []} %}
+{% set api_component_success_response = {code: '200', content: ''} %}
+{% set api_component_error_response = [] %}
+{% set api_component_sample_call = 'let data = new FormData();
+data.append("path", path);
+data.append("file", file);
+
+fetch("/api/cloud/uploadfile", {
+\ \ \ \ method: "POST",
+\ \ \ \ body: data
+})' %}
+{% set api_component_notes = [] %}
+
+{% extends "cloud/api/api_layout.html" %}

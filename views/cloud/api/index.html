@@ -1,0 +1,52 @@
+{% set title = 'Cloud API' %}
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://sindresorhus.com/github-markdown-css/github-markdown.css">
+{% endblock %}
+
+{% block body %}
+<div class="markdown-body" style="max-width: 1000px; margin: auto;">
+    <h1>Documentation</h1>
+
+    <nav class="api_navigation"></nav>
+
+    <section class="api_section">{% include "cloud/api/browse.html" %}</section>
+    <hr>
+    <section class="api_section">{% include "cloud/api/downloadfile.html" %}</section>
+    <hr>
+    <section class="api_section">{% include "cloud/api/uploadfile.html" %}</section>
+    <hr>
+    <section class="api_section">{% include "cloud/api/renamefile.html" %}</section>
+    <hr>
+
+    <style>
+        .api_section {
+            background-color: #fbfdff;
+            border-radius: 3px;
+            padding: 24px;
+        }
+
+        .api_section h2 {
+            margin-top: 0;
+        }
+    </style>
+
+    <script>
+        var sections_titles = document.querySelectorAll(".api_section h2");
+        var navigation = document.querySelector(".api_navigation");
+
+        var list = document.createElement('ul');
+        sections_titles.forEach(function (e, i, a) {
+            var element = document.createElement('a');
+            element.innerText = e.innerText;
+            element.setAttribute('href', '#' + e.innerText);
+
+            var list_item = document.createElement('li');
+            list_item.appendChild(element);
+            list.appendChild(list_item);
+        });
+        navigation.appendChild(list);
+    </script>
+</div>
+{% endblock %}

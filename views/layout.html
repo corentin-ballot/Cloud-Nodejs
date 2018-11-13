@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/layout.css">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <nav class="header_navigation" role="navigation">
+                <ul class="header_navigation_list">
+                    <li class="header_navigation_list__item"><a href="/">index</a></li>
+                    {% if user %}
+                    <li class="header_navigation_list__item"><a href="/profile">profile : {{ user.email }}</a></li>
+                    <li class="header_navigation_list__item"><a href="/logout">logout</a></li>
+                    {% else %}
+                    <li class="header_navigation_list__item"><a href="/login">login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main class="content">
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+</body>
+
+</html>

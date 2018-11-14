@@ -12,8 +12,6 @@ nunjucks.configure('views', {
 });
 
 router.get('/', function (req, res) {
-    // res.setHeader('Content-Type', 'text/plain');
-    // res.send('Documentation de l\'API');
     res.render('cloud/api/index.html');
 })
 

@@ -34,19 +34,22 @@
 {% endif %}
 
 <h3>Success Response:</h3>
+{% for success in api_component_success_response %}
 <ul>
-    <li>
-        <strong>Code:</strong> {{ api_component_success_response.code }} <br>
+    <li><strong>Code:</strong> {{ success.code }} <br>
         <strong>Content:</strong>
-        <pre>{{ api_component_success_response.content }}</pre>
+        <pre>{{ success.content }}</pre>
     </li>
 </ul>
+{% else %}
+<p>MISSING CONTENT</p>
+{% endfor %}
 
 <h3>Error Response:</h3>
 {% for error in api_component_error_response %}
 <ul>
     <li><strong>Code:</strong> {{ error.code }} <br>
-        <strong>Content:</strong> 
+        <strong>Content:</strong>
         <pre>{{ error.content }}</pre>
     </li>
 </ul>

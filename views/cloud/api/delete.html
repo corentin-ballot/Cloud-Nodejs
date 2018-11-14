@@ -1,0 +1,23 @@
+{% set api_component_name = 'delete' %}
+{% set api_component_description = 'Supprime le fichier.' %}
+{% set api_component_endpoint = '/api/cloud/delete' %}
+{% set api_component_methods = ['POST'] %}
+{% set api_component_params = {required : [{'name': 'files', 'type': 'array[path]' }], optional : []} %}
+{% set api_component_success_response = [{code: '200', content: '{
+\ \ \ \ "status": "success",
+\ \ \ \ "msg": "Files successfully deleted",
+\ \ \ \ "detail": "<code>[\"/doc/v1/delete-deprecated.md\",\"/doc/v1/navigate-deprecated.md\"]</code> were successfully
+deleted."
+}'}] %}
+{% set api_component_error_response = [{code: '403', content: '{
+\ \ \ \ "status": "success",
+\ \ \ \ "msg": "Fail to delete files",
+\ \ \ \ "detail": "An error occured while deleting files. Please login."
+}'}] %}
+{% set api_component_sample_call = 'fetch("/api/cloud/delete", {
+\ \ \ \ method: "POST",
+\ \ \ \ body: JSON.stringify(["/doc/v1/delete-deprecated.md","/doc/v1/navigate-deprecated.md"])
+})' %}
+{% set api_component_notes = [] %}
+
+{% extends "cloud/api/api_layout.html" %}

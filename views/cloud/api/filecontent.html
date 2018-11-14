@@ -1,0 +1,46 @@
+{% set api_component_name = 'filecontent' %}
+{% set api_component_description = 'Récupère le contenu du fichier.' %}
+{% set api_component_endpoint = '/api/cloud/filecontent' %}
+{% set api_component_methods = ['GET'] %}
+{% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path' }],
+optional : []} %}
+{% set api_component_success_response = [{code: '200', content: '{
+\ \ \ \ "type": "image",
+\ \ \ \ "url": "http://example.com/favicon.ico"
+}'},{code: '200', content: '{
+\ \ \ \ "type": "pdf",
+\ \ \ \ "url": "http://example.com/notice.pdf"
+}'},{code: '200', content: '{
+\ \ \ \ "type": "html",
+\ \ \ \ "content": "<h1>Hello, world !</h1>"
+}'},{code: '200', content: '{
+\ \ \ \ "type": "markdown",
+\ \ \ \ "content": "# Hello, world !"
+}'},{code: '200', content: '{
+\ \ \ \ "type": "zip",
+\ \ \ \ "tree": "[
+\ \ \ \ \ \ \ \ {"name":"emptydir","type":"dir", "content": []},
+\ \ \ \ \ \ \ \ {"name":"doc","type":"dir", "content": [
+\ \ \ \ \ \ \ \ \ \ \ \ {"name":"filecontent.html","mtime":"2018-11-06T08:20:54.747Z","size":227,"type":"file"},
+\ \ \ \ \ \ \ \ \ \ \ \ {"name":"browse.html","mtime":"2018-11-06T08:20:54.747Z","size":287,"type":"file"}
+\ \ \ \ \ \ \ \ ]},
+\ \ \ \ \ \ \ \ {"name":"browse.html","mtime":"2018-11-06T08:20:54.747Z","size":287,"type":"file"}
+\ \ \ \ ]"
+}'},{code: '200', content: '{
+\ \ \ \ "type": "viedo",
+\ \ \ \ "url": "http://example.com/video.mp4"
+}'}] %}
+{% set api_component_error_response = [{code: '403', content: '{
+\ \ \ \ "status": "error",
+\ \ \ \ "msg": "Fail to render file",
+\ \ \ \ "detail": "An error occured while rendering <code>file.md</code>. Please login."
+}'},{code: '500', content: '{
+\ \ \ \ "status": "error",
+\ \ \ \ "msg": "Fail to render file",
+\ \ \ \ "detail": "An error occured while trying to render <code>rapport.docx</code>. Mime <code>application/vnd.openxmlformats-officedocument.wordprocessingml.document</code>
+not implemented."
+}'}] %}
+{% set api_component_sample_call = 'fetch("/api/cloud/filecontent?fileurl=/README.md", {method: "GET"})' %}
+{% set api_component_notes = [] %}
+
+{% extends "cloud/api/api_layout.html" %}

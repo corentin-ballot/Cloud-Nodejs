@@ -13,6 +13,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var users = [
     { id: 0, email: 'admin', password: 'admin', role: ["ROLE_CLOUD_ADMIN"] },
+    { id: 1, email: 'test', password: 'test', role: [] },
 ];
 
 // expose this function to our app using module.exports

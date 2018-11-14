@@ -32,4 +32,27 @@ router.get('/browse', function (req, res) {
     });
 })
 
+
+// route middleware to make sure a user is logged in
+function requireAuthentication(req, res, next) {
+
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't return 403
+    res.status(403).json({ "status": "error", "msg": "Access denied", "detail": "You must login to perform this action." });
+}
+
+// route middleware to make sure a user is logged in as admin
+function requireAdminAuthentication(req, res, next) {
+    if (!req.isAuthenticated())
+        return requireAuthentication(req, res, next);
+
+    if (typeof req.user.role !== "undefined" && req.user.role.includes('ROLE_CLOUD_ADMIN'))
+        return next();
+
+    // if they aren't return 403
+    res.status(403).json({ "status": "error", "msg": "Access denied", "detail": "You don't have required rights to perform this action." });
+}
+
 module.exports = router

@@ -30,6 +30,13 @@ router.get('/browse', function (req, res) {
     });
 })
 
+router.get('/upload', requireAuthentication, function (req, res) {
+    res.status(200).send('OK : Authenticated !');
+})
+
+router.get('/delete', requireAdminAuthentication, function (req, res) {
+    res.status(200).send('OK : Authenticated as admin !');
+})
 
 // route middleware to make sure a user is logged in
 function requireAuthentication(req, res, next) {

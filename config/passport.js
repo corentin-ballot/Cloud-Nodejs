@@ -12,7 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 // connection.query('USE vidyawxx_build2');
 
 var users = [
-    { id: 0, email: 'admin', password: 'admin' }
+    { id: 0, email: 'admin', password: 'admin', role: ["ROLE_CLOUD_ADMIN"] },
 ];
 
 // expose this function to our app using module.exports

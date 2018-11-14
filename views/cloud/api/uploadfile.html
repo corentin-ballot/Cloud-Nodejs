@@ -4,8 +4,15 @@
 {% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'file', 'type': 'file' },{'name': 'path', 'type': 'path' }],
 optional : []} %}
-{% set api_component_success_response = {code: '200', content: ''} %}
-{% set api_component_error_response = [] %}
+{% set api_component_error_response = [{code: '403', content: '{
+\ \ \ \ "status": "error",
+\ \ \ \ "msg": "Fail to upload file",
+\ \ \ \ "detail": "An error occured while uploading <code>file.md</code>. Please login."
+}'},{code: '500', content: '{
+\ \ \ \ "status": "error",
+\ \ \ \ "msg": "Fail to upload file",
+\ \ \ \ "detail": "An error occured while uploading <code>file.md</code> in <code>/undefined/path</code>."
+}'}] %}
 {% set api_component_sample_call = 'let data = new FormData();
 data.append("path", path);
 data.append("file", file);

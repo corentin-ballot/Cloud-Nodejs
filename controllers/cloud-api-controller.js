@@ -28,6 +28,12 @@ router.get('/browse', function (req, res) {
     });
 })
 
+router.get('/download', requireAuthentication, function (req, res) {
+    let requested_file = (typeof req.query.fileurl === 'undefined') ? '/' : req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    res.download(FILES_PATH + requested_file);
+});
+
 router.get('/upload', requireAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated !');
 })

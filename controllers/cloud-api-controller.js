@@ -3,7 +3,7 @@ var express = require('express'),
 var app = express();
 
 const fs = require('fs');
-const files_path = ".";
+const FILES_PATH = "C:/Users/X181539/Desktop";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -16,14 +16,12 @@ router.get('/', function (req, res) {
 })
 
 router.get('/browse', function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-
     let requested_path = (typeof req.query.path === 'undefined') ? '/' : req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 
-    fs.readdir(files_path + requested_path, (err, files) => {
-        res.send(
+    fs.readdir(FILES_PATH + requested_path, (err, files) => {
+        res.json(
             files.map((file) => {
-                let file_stats = fs.statSync(files_path + requested_path + '/' + file);
+                let file_stats = fs.statSync(FILES_PATH + requested_path + '/' + file);
                 return { name: file, url: requested_path + file, mtime: file_stats.mtime, size: file_stats.size, type: file_stats.isDirectory() ? 'dir' : 'file' };
             })
         );

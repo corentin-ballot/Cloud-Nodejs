@@ -1,6 +1,8 @@
 var express = require('express');
 
+const fileUpload = require('express-fileupload');
 var app = express();
+app.use(fileUpload());
 
 const fs = require('fs');
 const FILES_PATH = "C:/Users/X181539/Desktop";
@@ -36,8 +38,54 @@ app.post('/download', requireAuthentication, function (req, res) {
     res.download(FILES_PATH + requested_file);
 });
 
-app.get('/upload', function (req, res) {
-})
+app.post('/upload', requireAuthentication, function (req, res) {
+    if (typeof req.files === "undefined" || Object.keys(req.files).length == 0) {
+        return res.status(400).json({
+            status: "error",
+            msg: "No files were uploaded",
+            detail: "The request was send whthout files."
+        });
+    }
+
+    let requested_path = (typeof req.body.path === 'undefined') ? '/' : req.body.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    if (Array.isArray(req.files.files)) {
+        // Multiple upload
+        req.files.files.map((file) => {
+            file.mv(FILES_PATH + requested_path + "/" + file.name, function (err) {
+                if (err) {
+                    res.status(500).json({
+                        status: "error",
+                        msg: "Fail to upload file",
+                        detail: "An error occured while uploading <code>" + req.files.files.map((e) => e.name) + "</code> in <code>" + requested_path + "</code>."
+                    });
+                }
+            });
+        }).then(() => {
+            res.json({
+                status: "success",
+                msg: "Files successfully uploaded",
+                detail: "Files <code>" + req.files.files.map((e) => e.name) + "</code> were successfully uploaded in <code>" + requested_path + "</code>."
+            });
+        });
+    } else {
+        // Single upload
+        req.files.files.mv(FILES_PATH + requested_path + "/" + req.files.files.name, function (err) {
+            if (err)
+                return res.status(500).json({
+                    status: "error",
+                    msg: "Fail to upload file",
+                    detail: "An error occured while uploading <code>" + req.files.files.name + "</code> in <code>" + requested_path + "</code>."
+                });
+
+            res.json({
+                status: "success",
+                msg: "File successfully uploaded",
+                detail: "The file <code>" + req.files.files.name + "</code> was successfully uploaded in <code>" + requested_path + "</code>."
+            });
+        });
+    }
+});
 
 app.get('/delete', requireAdminAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated as admin !');

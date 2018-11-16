@@ -65,6 +65,6 @@
 {% if api_component_notes|length %}
 <h3>Notes:</h3>
 {% for note in api_component_notes %}
-<p>{{ note }}</p>
+<p>{{ note|safe }}</p>
 {% endfor %}
 {% endif %}

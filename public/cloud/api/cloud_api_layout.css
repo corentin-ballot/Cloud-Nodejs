@@ -23,20 +23,32 @@
 }
 
 .api_navigation {
-    border: solid 2px black;
+    border: 1px solid #eaecef;
     border-radius: 3px;
     position: sticky;
     top: 0;
-    padding: 8px;
+    padding: 0 8px;
+    max-height: 50vh;
+    overflow: hidden auto;
+    width: 25%;
+}
+
+.api_navigation h1 {
+    margin: 0;
+    padding: 0 4px .3em 4px;
+    font-size: 1.5em;
 }
 
 .api_navigation ul {
     margin: 0;
-    padding: 0 0 0 20px;
+    padding: 0;
 }
 
 .api_navigation ul li {
     margin: 0;
     padding: 0;
     padding: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

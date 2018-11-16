@@ -1,5 +1,5 @@
-var express = require('express'),
-    router = express.Router();
+var express = require('express');
+
 var app = express();
 
 const fs = require('fs');
@@ -11,11 +11,10 @@ nunjucks.configure('views', {
     express: app
 });
 
-router.get('/', function (req, res) {
-    res.render('cloud/api/index.html');
+app.get('/', function (req, res) {
 })
 
-router.get('/browse', function (req, res) {
+app.post('/browse', function (req, res) {
     let requested_path = (typeof req.query.path === 'undefined') ? '/' : req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 
     fs.readdir(FILES_PATH + requested_path, (err, files) => {
@@ -28,17 +27,16 @@ router.get('/browse', function (req, res) {
     });
 })
 
-router.get('/download', requireAuthentication, function (req, res) {
+app.post('/download', requireAuthentication, function (req, res) {
     let requested_file = (typeof req.query.fileurl === 'undefined') ? '/' : req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 
     res.download(FILES_PATH + requested_file);
 });
 
-router.get('/upload', requireAuthentication, function (req, res) {
-    res.status(200).send('OK : Authenticated !');
+app.get('/upload', function (req, res) {
 })
 
-router.get('/delete', requireAdminAuthentication, function (req, res) {
+app.get('/delete', requireAdminAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated as admin !');
 })
 
@@ -64,4 +62,4 @@ function requireAdminAuthentication(req, res, next) {
     res.status(403).json({ "status": "error", "msg": "Access denied", "detail": "You don't have required rights to perform this action." });
 }
 
-module.exports = router
+module.exports = app

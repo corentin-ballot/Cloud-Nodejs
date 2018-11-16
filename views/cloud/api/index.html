@@ -11,29 +11,22 @@
     <h1>Documentation</h1>
 
     <div class="api_container">
-        <nav class="api_navigation"></nav>
+        <nav class="api_navigation">
+            <ul></ul>
+        </nav>
 
         <div class="api_sections">
-            <section class="api_sections_item">{% include "cloud/api/browse.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/downloadfile.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/uploadfile.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/renamefile.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/filecontent.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/savetextfile.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/extractzip.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/zip.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/delete.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/newfile.html" %}</section>
-            <section class="api_sections_item">{% include "cloud/api/newdir.html" %}</section>
+            {% for api in apis %}
+            <section class="api_sections_item">{% include "cloud/api/" + api + ".html" %}</section>
+            {% endfor %}
         </div>
     </div>
 
     <!-- Generate nav using .api_sections_item h2 elements -->
     <script>
         var sections_titles = document.querySelectorAll(".api_sections_item h2");
-        var navigation = document.querySelector(".api_navigation");
+        var list = document.querySelector(".api_navigation ul");
 
-        var list = document.createElement('ul');
         sections_titles.forEach(function (e, i, a) {
             var element = document.createElement('a');
             element.innerText = e.innerText;
@@ -43,7 +36,6 @@
             list_item.appendChild(element);
             list.appendChild(list_item);
         });
-        navigation.appendChild(list);
     </script>
 </div>
 {% endblock %}

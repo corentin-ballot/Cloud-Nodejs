@@ -26,6 +26,11 @@ fetch("/api/cloud/uploadfile", {
 \ \ \ \ method: "POST",
 \ \ \ \ body: data
 })' %}
-{% set api_component_notes = [] %}
+{% set api_component_notes = ['Form example :
+<form ref="uploadForm" encType="multipart/form-data" class="" action="/api/cloud/upload" method="post">
+    <input type="file" name="files" value="" multiple><br>
+    <input type="text" name="path" value="/" multiple><br>
+    <input type="submit" value="upload!">
+</form>'] %}
 
 {% extends "cloud/api/api_layout.html" %}

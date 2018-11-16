@@ -87,6 +87,27 @@ app.post('/upload', requireAuthentication, function (req, res) {
     }
 });
 
+app.post('/rename', requireAuthentication, function (req, res) {
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let newurl = req.query.newurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    fs.rename(FILES_PATH + '/' + fileurl, FILES_PATH + '/' + newurl, function (err) {
+        if (err) {
+            res.status(500).json({
+                "status": "error",
+                "msg": "Fail to rename file",
+                "detail": "An error occured while trying to rename <code>" + fileurl + "</code> into <code>" + newurl + "</code>."
+            });
+        } else {
+            res.status(200).json({
+                "status": "success",
+                "msg": "File successfully renamed",
+                "detail": "<code>" + fileurl + "</code> was successfully renamed as <code>" + newurl + "</code>."
+            });
+        }
+    });
+});
+
 app.get('/delete', requireAdminAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated as admin !');
 });

@@ -1,4 +1,5 @@
 var express = require('express');
+var mime = require('mime-types');
 
 const fileUpload = require('express-fileupload');
 var app = express();
@@ -6,6 +7,7 @@ app.use(fileUpload());
 
 const fs = require('fs');
 const FILES_PATH = "C:/Users/X181539/Desktop";
+const PUBLIC_FILES_PATH = "/cloudlink";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -106,6 +108,59 @@ app.post('/rename', requireAuthentication, function (req, res) {
             });
         }
     });
+});
+
+app.post('/preview', requireAuthentication, function (req, res) {
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let file_mime = mime.lookup(FILES_PATH + '/' + fileurl);
+
+    switch (file_mime) {
+        case 'application/pdf':
+            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                res.status(200).json({
+                    "status": "success",
+                    "type": "pdf",
+                    "url": PUBLIC_FILES_PATH + fileurl
+                });
+            });
+            break;
+
+        case 'text/plain': case 'inode/x-empty': case 'text/x-c':
+            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                res.status(200).json({
+                    "status": "success",
+                    "type": "text",
+                    "content": data
+                });
+            });
+            break;
+
+        case 'text/markdown':
+            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                res.status(200).json({
+                    "status": "success",
+                    "type": "markdown",
+                    "content": data
+                });
+            });
+            break;
+
+        case 'text/html':
+            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                res.status(200).json({
+                    "status": "success",
+                    "type": "html",
+                    "content": data
+                });
+            });
+            break;
+
+        default: res.status(500).json({
+            "status": "error",
+            "msg": "Fail to render file",
+            "detail": "An error occured while trying to render <code>" + fileurl + "</code>. Mime <code>" + file_mime + "</code> not implemented."
+        });
+    }
 });
 
 app.get('/delete', requireAdminAuthentication, function (req, res) {

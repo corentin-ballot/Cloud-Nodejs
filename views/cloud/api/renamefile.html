@@ -10,10 +10,14 @@ optional : []} %}
 \ \ \ \ "detail": "<code>/api/doc/file.md</code> was successfully renamed as <code>/api/doc/README.md</code>."
 }'}] %}
 {% set api_component_error_response = [{code: '403', content: '{
-\ \ \ \ "status": "error",
-\ \ \ \ "msg": "Fail to rename file",
-\ \ \ \ "detail": "An error occured while renaming <code>file.md</code>. Please login."
-}'},{code: '500', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You must login to perform this action."
+}'},{code: '403', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You don't have required rights to perform this action."
+},{code: '500', content: '{
 \ \ \ \ "status": "error",
 \ \ \ \ "msg": "Fail to rename file",
 \ \ \ \ "detail": "An error occured while trying to rename <code>/api/doc/file.md</code> into <code>/undefined/path/README.md</code>."

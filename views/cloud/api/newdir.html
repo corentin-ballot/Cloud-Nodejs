@@ -10,10 +10,14 @@
 \ \ \ \ "detail": "<code>src</code> was successfully created in <code>/project</code>."
 }'}] %}
 {% set api_component_error_response = [{code: '403', content: '{
-\ \ \ \ "status": "error",
-\ \ \ \ "msg": "Fail to create directory",
-\ \ \ \ "detail": "An error occured while creating directory. Please login."
-}'},{code: '500', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You must login to perform this action."
+}'},{code: '403', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You don't have required rights to perform this action."
+},{code: '500', content: '{
 \ \ \ \ "status": "error",
 \ \ \ \ "msg": "Fail to create directory",
 \ \ \ \ "detail": "An error occured while trying to create <code>src</code> into <code>/doc</code>."

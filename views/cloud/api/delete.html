@@ -10,10 +10,14 @@
 deleted."
 }'}] %}
 {% set api_component_error_response = [{code: '403', content: '{
-\ \ \ \ "status": "success",
-\ \ \ \ "msg": "Fail to delete files",
-\ \ \ \ "detail": "An error occured while deleting files. Please login."
-}'}] %}
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You must login to perform this action."
+}'},{code: '403', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You don't have required rights to perform this action."
+}] %}
 {% set api_component_sample_call = 'fetch("/api/cloud/delete", {
 \ \ \ \ method: "POST",
 \ \ \ \ body: JSON.stringify(["/doc/v1/delete-deprecated.md","/doc/v1/navigate-deprecated.md"])

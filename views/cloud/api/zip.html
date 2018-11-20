@@ -11,9 +11,13 @@
 \ \ \ \ "zip_path": "/doc/archives/819343202.zip"
 }'}] %}
 {% set api_component_error_response = [{code: '403', content: '{
-\ \ \ \ "status": "error",
-\ \ \ \ "msg": "Fail to zip files",
-\ \ \ \ "detail": "An error occured while zipping files. Please login."
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You must login to perform this action."
+}'},{code: '403', content: '{
+\ \ \ \ "status":"error",
+\ \ \ \ "msg":"Access denied",
+\ \ \ \ "detail":"You don't have required rights to perform this action."
 }'}] %}
 {% set api_component_sample_call = 'let data = new FormData();
 data.append("path", path);

@@ -163,6 +163,49 @@ app.post('/preview', requireAuthentication, function (req, res) {
     }
 });
 
+app.post('/delete', function (req, res) {
+    let files = JSON.parse(req.query.files).map((e) => e.replace(/\.\./g, '').replace(/[\/]+/g, '/'));
+
+    files.map((path, index, array) => {
+        fs.lstat(FILES_PATH + '/' + path, (err, stats) => {
+            if (err) {
+                console.log(err);
+                return res.json({
+                    status: "error",
+                    msg: "Fail to delete files",
+                    detail: "An error occured while deleting some files."
+                });
+            } else if (stats.isFile()) {
+                fs.unlinkSync(FILES_PATH + '/' + path);
+            } else {
+                deleteFolderRecursive(FILES_PATH + '/' + path);
+            }
+            console.log(index, array.length);
+            if (index >= array.length - 1) {
+                return res.json({
+                    status: "success",
+                    msg: "Files successfully deleted",
+                    detail: "Files <code>" + files + "</code> were successfully deleted."
+                });
+            }
+        });
+    });
+
+    var deleteFolderRecursive = function (path) {
+        if (fs.existsSync(path)) {
+            fs.readdirSync(path).forEach(function (file, index) {
+                var curPath = path + "/" + file;
+                if (fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(path);
+        }
+    };
+});
+
 app.get('/delete', requireAdminAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated as admin !');
 });

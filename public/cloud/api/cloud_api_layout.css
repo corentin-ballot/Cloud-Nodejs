@@ -26,7 +26,7 @@
     border: 1px solid #eaecef;
     border-radius: 3px;
     position: sticky;
-    top: 0;
+    top: 8px;
     padding: 0 8px;
     max-height: 50vh;
     overflow: hidden auto;
@@ -36,7 +36,8 @@
 .api_navigation h1 {
     margin: 0;
     padding: 0 4px .3em 4px;
-    font-size: 1.5em;
+    font-size: 100%;
+    word-wrap: normal;
 }
 
 .api_navigation ul {

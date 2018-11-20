@@ -1,6 +1,6 @@
-{% set api_component_name = 'filecontent' %}
+{% set api_component_name = 'preview' %}
 {% set api_component_description = 'Récupère le contenu du fichier.' %}
-{% set api_component_endpoint = '/api/cloud/filecontent' %}
+{% set api_component_endpoint = '/api/cloud/preview' %}
 {% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path' }],
 optional : []} %}
@@ -21,7 +21,7 @@ optional : []} %}
 \ \ \ \ "tree": "[
 \ \ \ \ \ \ \ \ {"name":"emptydir","type":"dir", "content": []},
 \ \ \ \ \ \ \ \ {"name":"doc","type":"dir", "content": [
-\ \ \ \ \ \ \ \ \ \ \ \ {"name":"filecontent.html","mtime":"2018-11-06T08:20:54.747Z","size":227,"type":"file"},
+\ \ \ \ \ \ \ \ \ \ \ \ {"name":"preview.html","mtime":"2018-11-06T08:20:54.747Z","size":227,"type":"file"},
 \ \ \ \ \ \ \ \ \ \ \ \ {"name":"browse.html","mtime":"2018-11-06T08:20:54.747Z","size":287,"type":"file"}
 \ \ \ \ \ \ \ \ ]},
 \ \ \ \ \ \ \ \ {"name":"browse.html","mtime":"2018-11-06T08:20:54.747Z","size":287,"type":"file"}
@@ -44,7 +44,7 @@ optional : []} %}
 \ \ \ \ "detail": "An error occured while trying to render <code>rapport.docx</code>. Mime <code>application/vnd.openxmlformats-officedocument.wordprocessingml.document</code>
 not implemented."
 }'}] %}
-{% set api_component_sample_call = 'fetch("/api/cloud/filecontent?fileurl=/README.md", {method: "GET"})' %}
+{% set api_component_sample_call = 'fetch("/api/cloud/preview?fileurl=/README.md", {method: "POST"})' %}
 {% set api_component_notes = [] %}
 
 {% extends "cloud/api/api_layout.html" %}

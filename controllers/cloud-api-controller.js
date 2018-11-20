@@ -206,7 +206,7 @@ app.post('/delete', requireAdminAuthentication, function (req, res) {
     };
 });
 
-app.post('/newfile', function (req, res) {
+app.post('/newfile', requireAuthentication, function (req, res) {
     let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
     let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 
@@ -227,7 +227,7 @@ app.post('/newfile', function (req, res) {
     });
 });
 
-app.post('/newfolder', function (req, res) {
+app.post('/newfolder', requireAuthentication, function (req, res) {
     let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
     let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 

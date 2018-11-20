@@ -163,7 +163,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
     }
 });
 
-app.post('/delete', function (req, res) {
+app.post('/delete', requireAdminAuthentication, function (req, res) {
     let files = JSON.parse(req.query.files).map((e) => e.replace(/\.\./g, '').replace(/[\/]+/g, '/'));
 
     files.map((path, index, array) => {
@@ -204,6 +204,27 @@ app.post('/delete', function (req, res) {
             fs.rmdirSync(path);
         }
     };
+});
+
+app.post('/newfile', function (req, res) {
+    let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    fs.open(FILES_PATH + '/' + path + '/' + name, 'ax', (err) => {
+        if (err) {
+            res.status(500).json({
+                "status": "error",
+                "msg": "Fail to create file",
+                "detail": "An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>."
+            });
+        } else {
+            res.status(200).json({
+                "status": "success",
+                "msg": "File successfully created",
+                "detail": "<code>" + name + "</code> was successfully created in <code>" + path + "</code>."
+            });
+        }
+    });
 });
 
 app.get('/delete', requireAdminAuthentication, function (req, res) {

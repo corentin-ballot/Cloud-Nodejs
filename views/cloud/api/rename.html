@@ -1,6 +1,6 @@
-{% set api_component_name = 'renamefile' %}
+{% set api_component_name = 'rename' %}
 {% set api_component_description = 'Change le chemin d\'un fichier/dossier.' %}
-{% set api_component_endpoint = '/api/cloud/renamefile' %}
+{% set api_component_endpoint = '/api/cloud/rename' %}
 {% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path'}, {'name': 'newurl', 'type': 'path' }],
 optional : []} %}
@@ -22,7 +22,7 @@ optional : []} %}
 \ \ \ \ "msg": "Fail to rename file",
 \ \ \ \ "detail": "An error occured while trying to rename <code>/api/doc/file.md</code> into <code>/undefined/path/README.md</code>."
 }'}] %}
-{% set api_component_sample_call = 'fetch("/api/cloud/renamefile", {
+{% set api_component_sample_call = 'fetch("/api/cloud/rename", {
 \ \ \ \ method: "GET",
 \ \ \ \ body: JSON.stringify({fileurl: "/doc/index.html", newurl: "/doc/api/index.html" })
 })' %}

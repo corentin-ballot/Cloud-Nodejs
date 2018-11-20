@@ -1,7 +1,7 @@
 {% set api_component_name = 'downloadfile' %}
 {% set api_component_description = 'Télécharge le fichier.' %}
 {% set api_component_endpoint = '/api/cloud/downloadfile' %}
-{% set api_component_methods = ['GET'] %}
+{% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path' }], optional : []} %}
 {% set api_component_success_response = [{code: '200', content: ''}] %}
 {% set api_component_error_response = [{code: '403', content: '{

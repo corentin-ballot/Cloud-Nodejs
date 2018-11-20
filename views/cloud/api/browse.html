@@ -1,7 +1,7 @@
 {% set api_component_name = 'browse' %}
 {% set api_component_description = 'Permet de récupérer le contenu d\'un répertoire.' %}
 {% set api_component_endpoint = '/api/cloud/browse' %}
-{% set api_component_methods = ['GET'] %}
+{% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'path', 'type': 'path' }], optional : []} %}
 {% set api_component_success_response = [{code: '200', content: '[
 \ \ \ \ {"name":"doc","url":"/api/doc","mtime":"2018-11-06T08:20:54.747Z","size":0,"type":"dir"},

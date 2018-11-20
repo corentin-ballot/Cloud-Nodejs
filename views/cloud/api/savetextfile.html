@@ -1,7 +1,7 @@
 {% set api_component_name = 'renamefile' %}
 {% set api_component_description = 'Change le chemin d\'un fichier/dossier.' %}
 {% set api_component_endpoint = '/api/cloud/renamefile' %}
-{% set api_component_methods = ['GET'] %}
+{% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'fileurl', 'type': 'path'}, {'name': 'newurl', 'type': 'path' }],
 optional : []} %}
 {% set api_component_success_response = [{code: '200', content: '{

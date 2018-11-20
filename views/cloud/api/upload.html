@@ -1,6 +1,6 @@
-{% set api_component_name = 'uploadfile' %}
+{% set api_component_name = 'upload' %}
 {% set api_component_description = 'Upload le fichier.' %}
-{% set api_component_endpoint = '/api/cloud/uploadfile' %}
+{% set api_component_endpoint = '/api/cloud/upload' %}
 {% set api_component_methods = ['POST'] %}
 {% set api_component_params = {required : [{'name': 'file', 'type': 'file' },{'name': 'path', 'type': 'path' }],
 optional : []} %}
@@ -26,7 +26,7 @@ optional : []} %}
 data.append("path", path);
 data.append("file", file);
 
-fetch("/api/cloud/uploadfile", {
+fetch("/api/cloud/upload", {
 \ \ \ \ method: "POST",
 \ \ \ \ body: data
 })' %}

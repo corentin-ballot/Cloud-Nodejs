@@ -7,7 +7,6 @@ app.use(fileUpload());
 
 const fs = require('fs');
 const FILES_PATH = "C:/Users/X181539/Desktop";
-const PUBLIC_FILES_PATH = "/cloudlink";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -110,6 +109,13 @@ app.post('/rename', requireAuthentication, function (req, res) {
     });
 });
 
+app.get('/file', requireAuthentication, function (req, res) {
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    res.setHeader("content-type", mime.lookup(FILES_PATH + '/' + fileurl));
+    fs.createReadStream(FILES_PATH + '/' + fileurl).pipe(res);
+});
+
 app.post('/preview', requireAuthentication, function (req, res) {
     let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
     let file_mime = mime.lookup(FILES_PATH + '/' + fileurl);
@@ -120,7 +126,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
                 res.status(200).json({
                     "status": "success",
                     "type": "pdf",
-                    "url": PUBLIC_FILES_PATH + fileurl
+                    "url": req.baseUrl + '/file?fileurl=' + fileurl
                 });
             });
             break;

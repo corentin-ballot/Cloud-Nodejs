@@ -1,4 +1,4 @@
-{% set api_component_name = 'downloadfile' %}
+{% set api_component_name = 'download' %}
 {% set api_component_description = 'Télécharge le fichier.' %}
 {% set api_component_endpoint = '/api/cloud/downloadfile' %}
 {% set api_component_methods = ['POST'] %}
@@ -13,7 +13,7 @@
 \ \ \ \ "msg":"Access denied",
 \ \ \ \ "detail":"You don't have required rights to perform this action."
 }] %}
-{% set api_component_sample_call = 'fetch("/api/cloud/downloadfile", {
+{% set api_component_sample_call = 'fetch("/api/cloud/download", {
 \ \ \ \ method: "GET",
 \ \ \ \ body: JSON.stringify({ fileurl: "/api/index.html" })
 })' %}

@@ -248,10 +248,6 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
     });
 });
 
-app.get('/delete', requireAdminAuthentication, function (req, res) {
-    res.status(200).send('OK : Authenticated as admin !');
-});
-
 app.get('/:endpoint', function (req, res) {
     res.render('cloud/api/index.html', { apis: [req.params.endpoint] });
 })

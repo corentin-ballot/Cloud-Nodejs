@@ -17,7 +17,7 @@ nunjucks.configure('views', {
 
 app.get('/', function (req, res) {
     res.render('cloud/api/index.html', {
-        apis: ['browse', 'downloadfile', 'uploadfile', 'renamefile', 'filecontent', 'savetextfile', 'extractzip', 'zip', 'delete', 'newfile', 'newdir']
+        apis: ['browse', 'download', 'upload', 'rename', 'preview', 'savetextfile', 'extractzip', 'zip', 'delete', 'newfile', 'newdir']
     });
 })
 

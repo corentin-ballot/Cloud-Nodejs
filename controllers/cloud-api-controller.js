@@ -227,6 +227,27 @@ app.post('/newfile', function (req, res) {
     });
 });
 
+app.post('/newfolder', function (req, res) {
+    let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    fs.mkdir(FILES_PATH + '/' + path + '/' + name, { recursive: true }, (err) => {
+        if (err) {
+            res.status(500).json({
+                "status": "error",
+                "msg": "Fail to create folder",
+                "detail": "An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>."
+            });
+        } else {
+            res.status(200).json({
+                "status": "success",
+                "msg": "Folder successfully created",
+                "detail": "<code>" + name + "</code> was successfully created in <code>" + path + "</code>."
+            });
+        }
+    });
+});
+
 app.get('/delete', requireAdminAuthentication, function (req, res) {
     res.status(200).send('OK : Authenticated as admin !');
 });

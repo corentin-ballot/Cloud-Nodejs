@@ -16,7 +16,7 @@ nunjucks.configure('views', {
 
 app.get('/', function (req, res) {
     res.render('cloud/api/index.html', {
-        apis: ['browse', 'download', 'upload', 'rename', 'preview', 'savetextfile', 'extractzip', 'zip', 'delete', 'newfile', 'newdir']
+        section: "introduction",
     });
 })
 
@@ -255,7 +255,12 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
 });
 
 app.get('/:endpoint', function (req, res) {
-    res.render('cloud/api/index.html', { apis: [req.params.endpoint] });
+    res.render('cloud/api/index.html', { section: req.params.endpoint }, function (err, html) {
+        if (err) {
+            return res.status(404).send('not found');
+        }
+        res.send(html);
+    });
 })
 
 // route middleware to make sure a user is logged in

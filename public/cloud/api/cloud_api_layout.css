@@ -1,6 +1,9 @@
 .api_sections {
     min-width: 0;
     min-height: 0;
+    width: 75%;
+    padding-top: 32px;
+    padding-left: 24px;
 }
 
 .api_sections_item {
@@ -8,11 +11,20 @@
     padding: 0 0 0 24px;
 }
 
-.api_sections_item h2 {
-    background-color: white;
+.api_sections h1, .api_sections h2  {
     margin-top: 0;
-    position: sticky;
-    top: 0;
+}
+.api_sections h1 {
+    font-size: 1.5em;
+}
+.api_sections h2 {
+    font-size: 1.25em;
+}
+.api_sections h3 {
+    font-size: 1em;
+}
+.api_sections h4 {
+    font-size: .875em;
 }
 
 .api_container {
@@ -20,17 +32,21 @@
     max-width: 100%;
     align-items: flex-start;
     position: relative;
+    height: 100%;
+    overflow: auto;
 }
 
 .api_navigation {
-    border: 1px solid #eaecef;
-    border-radius: 3px;
-    position: sticky;
-    top: 8px;
-    padding: 0 8px;
-    max-height: 50vh;
-    overflow: hidden auto;
+    padding-top: 32px;
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(245, 247, 249);
     width: 25%;
+    position: sticky;
+    top: 0;
 }
 
 .api_navigation h1 {
@@ -46,10 +62,25 @@
 }
 
 .api_navigation ul li {
-    margin: 0;
     padding: 0;
-    padding: 4px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.api_navigation ul li [aria-current], .api_navigation ul li [aria-current]:hover {
+    background-color: white;
+    border: 1px solid rgb(230, 236, 241);
+    border-right: none;
+}
+
+.api_navigation ul li a {
+    display: block;
+    padding: 7px 24px 7px 16px;
+    color: unset;
+}
+
+.api_navigation ul li a:hover {
+    background-color: rgb(230, 236, 241);
+    text-decoration: none;
 }

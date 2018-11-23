@@ -6,7 +6,7 @@ var app = express();
 app.use(fileUpload());
 
 const fs = require('fs');
-const FILES_PATH = "C:/Users/X181539/Desktop";
+const FILES_PATH = "C:/Users/X181539/Desktop/";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -21,12 +21,19 @@ app.get('/', function (req, res) {
 })
 
 app.post('/browse', function (req, res) {
-    let requested_path = (typeof req.query.path === 'undefined') ? '/' : req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let requested_path = (typeof req.query.path === 'undefined') ? '/' : req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.path.substr(req.query.path.length - 1) === '/' ? '' : '/');
 
     fs.readdir(FILES_PATH + requested_path, (err, files) => {
+        if (err) {
+            return res.status(404).json({
+                status: "error",
+                msg: "Not found",
+                detail: "The requested url was not found in the server."
+            });
+        }
         res.json(
             files.map((file) => {
-                let file_stats = fs.statSync(FILES_PATH + requested_path + '/' + file);
+                let file_stats = fs.statSync(FILES_PATH + requested_path + file);
                 return { name: file, url: requested_path + file, mtime: file_stats.mtime, size: file_stats.size, type: file_stats.isDirectory() ? 'dir' : 'file' };
             })
         );
@@ -40,6 +47,7 @@ app.post('/download', requireAuthentication, function (req, res) {
 });
 
 app.post('/upload', requireAuthentication, function (req, res) {
+    console.log(req);
     if (typeof req.files === "undefined" || Object.keys(req.files).length == 0) {
         return res.status(400).json({
             status: "error",
@@ -48,12 +56,12 @@ app.post('/upload', requireAuthentication, function (req, res) {
         });
     }
 
-    let requested_path = (typeof req.body.path === 'undefined') ? '/' : req.body.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let requested_path = (typeof req.body.path === 'undefined') ? '/' : req.body.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.body.path.substr(req.body.path.length - 1) === '/' ? '' : '/');
 
     if (Array.isArray(req.files.files)) {
         // Multiple upload
         req.files.files.map((file) => {
-            file.mv(FILES_PATH + requested_path + "/" + file.name, function (err) {
+            file.mv(FILES_PATH + requested_path + file.name, function (err) {
                 if (err) {
                     res.status(500).json({
                         status: "error",
@@ -71,7 +79,7 @@ app.post('/upload', requireAuthentication, function (req, res) {
         });
     } else {
         // Single upload
-        req.files.files.mv(FILES_PATH + requested_path + "/" + req.files.files.name, function (err) {
+        req.files.files.mv(FILES_PATH + requested_path + req.files.files.name, function (err) {
             if (err)
                 return res.status(500).json({
                     status: "error",
@@ -110,19 +118,19 @@ app.post('/rename', requireAuthentication, function (req, res) {
 });
 
 app.get('/file', requireAuthentication, function (req, res) {
-    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.fileurl.substr(req.query.fileurl.length - 1) === '/' ? '' : '/');
 
-    res.setHeader("content-type", mime.lookup(FILES_PATH + '/' + fileurl));
-    fs.createReadStream(FILES_PATH + '/' + fileurl).pipe(res);
+    res.setHeader("content-type", mime.lookup(FILES_PATH + fileurl));
+    fs.createReadStream(FILES_PATH + fileurl).pipe(res);
 });
 
 app.post('/preview', requireAuthentication, function (req, res) {
-    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.fileurl.substr(req.query.fileurl.length - 1) === '/' ? '' : '/');
     let file_mime = mime.lookup(FILES_PATH + '/' + fileurl);
 
     switch (file_mime) {
         case 'application/pdf':
-            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
                     "status": "success",
                     "type": "pdf",
@@ -132,7 +140,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
             break;
 
         case 'text/plain': case 'inode/x-empty': case 'text/x-c':
-            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
                     "status": "success",
                     "type": "text",
@@ -142,7 +150,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
             break;
 
         case 'text/markdown':
-            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
                     "status": "success",
                     "type": "markdown",
@@ -152,7 +160,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
             break;
 
         case 'text/html':
-            fs.readFile(FILES_PATH + '/' + fileurl, { encoding: 'utf-8' }, function (err, data) {
+            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
                     "status": "success",
                     "type": "html",
@@ -170,10 +178,10 @@ app.post('/preview', requireAuthentication, function (req, res) {
 });
 
 app.post('/delete', requireAdminAuthentication, function (req, res) {
-    let files = JSON.parse(req.query.files).map((e) => e.replace(/\.\./g, '').replace(/[\/]+/g, '/'));
+    let files = JSON.parse(req.query.files).map((e) => e.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(e.substr(e.length - 1) === '/' ? '' : '/'));
 
     files.map((path, index, array) => {
-        fs.lstat(FILES_PATH + '/' + path, (err, stats) => {
+        fs.lstat(FILES_PATH + path, (err, stats) => {
             if (err) {
                 console.log(err);
                 return res.json({
@@ -182,9 +190,9 @@ app.post('/delete', requireAdminAuthentication, function (req, res) {
                     detail: "An error occured while deleting some files."
                 });
             } else if (stats.isFile()) {
-                fs.unlinkSync(FILES_PATH + '/' + path);
+                fs.unlinkSync(FILES_PATH + path);
             } else {
-                deleteFolderRecursive(FILES_PATH + '/' + path);
+                deleteFolderRecursive(FILES_PATH + path);
             }
             console.log(index, array.length);
             if (index >= array.length - 1) {
@@ -214,9 +222,9 @@ app.post('/delete', requireAdminAuthentication, function (req, res) {
 
 app.post('/newfile', requireAuthentication, function (req, res) {
     let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
-    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.path.substr(req.query.path.length - 1) === '/' ? '' : '/');
 
-    fs.open(FILES_PATH + '/' + path + '/' + name, 'ax', (err) => {
+    fs.open(FILES_PATH + path + name, 'ax', (err) => {
         if (err) {
             res.status(500).json({
                 "status": "error",
@@ -235,9 +243,9 @@ app.post('/newfile', requireAuthentication, function (req, res) {
 
 app.post('/newfolder', requireAuthentication, function (req, res) {
     let name = req.query.name.replace(/\.\./g, '').replace(/[\/]+/g, '/');
-    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+    let path = req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.path.substr(req.query.path.length - 1) === '/' ? '' : '/');
 
-    fs.mkdir(FILES_PATH + '/' + path + '/' + name, { recursive: true }, (err) => {
+    fs.mkdir(FILES_PATH + path + name, { recursive: true }, (err) => {
         if (err) {
             res.status(500).json({
                 "status": "error",

@@ -1,9 +1,14 @@
-var express = require('express'),
-    router = express.Router();
+var express = require('express');
+var app = express();
 
-router.get('*', function (req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send('Vous êtes dans le cloud : ' + req.url);
+var nunjucks = require('nunjucks');
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+
+app.get('*', function (req, res) {
+    res.render('cloud/index.html');
 })
 
-module.exports = router
+module.exports = app

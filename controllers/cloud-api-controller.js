@@ -6,7 +6,7 @@ var app = express();
 app.use(fileUpload());
 
 const fs = require('fs');
-const FILES_PATH = "C:/Users/X181539/Desktop/";
+const FILES_PATH = "/mnt/f/Corentin/Documents/TESTS";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -125,10 +125,37 @@ app.get('/file', requireAuthentication, function (req, res) {
 });
 
 app.post('/preview', requireAuthentication, function (req, res) {
-    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.fileurl.substr(req.query.fileurl.length - 1) === '/' ? '' : '/');
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
     let file_mime = mime.lookup(FILES_PATH + '/' + fileurl);
 
     switch (file_mime) {
+        case 'application/zip':
+            const zip = new StreamZip({file: FILES_PATH + fileurl,storeEntries: true});
+            zip.on('ready', () => {
+                for (const entry of Object.values(zip.entries())) {
+                    if (entry.isDirectory) {
+                        let path = entry.name.slice(0, -1);
+                        let splitname = path.split(/\/(?=[^\/]+$)/);
+            
+                        // create dir obj
+                        let dir = { name: splitname[splitname.length - 1], type: "dir", content: [] };
+                        // save content attribute reference
+                        contents[path] = dir.content;
+                        // add dir obj to parent dir
+                        splitname.length > 1 ? contents[splitname[0]].push(dir) : array.push(dir);
+                    } else {
+                        let splitname = entry.name.split(/\/(?=[^\/]+$)/);
+            
+                        // create file obj
+                        let file = { name: splitname[splitname.length - 1], type: "file", size: 0 };
+                        // add file obj to parent dir
+                        splitname.length > 1 ? contents[splitname[0]].push(file) : array.push(file);
+                    }
+                }
+                // Do not forget to close the file once you're done
+                zip.close()
+            });
+            break;
         case 'application/pdf':
             fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({

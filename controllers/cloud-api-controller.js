@@ -143,6 +143,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
                     "content": array
                 });
             });
+            zip.on('error', () => res.status(500).send('An error occured while reading <code>' + fileurl + '</code>.'));
             break;
         case 'application/pdf':
             fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {

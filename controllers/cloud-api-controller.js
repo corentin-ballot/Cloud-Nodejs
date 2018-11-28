@@ -26,11 +26,7 @@ app.post('/browse', function (req, res) {
 
     fs.readdir(FILES_PATH + requested_path, (err, files) => {
         if (err) {
-            return res.status(404).json({
-                status: "error",
-                msg: "Not found",
-                detail: "The requested url was not found in the server."
-            });
+            return res.status(404).send(`The requested url <code>${requested_path}</code> was not found in the server.`);
         }
         res.json(
             files.map((file) => {
@@ -50,11 +46,7 @@ app.post('/download', requireAuthentication, function (req, res) {
 app.post('/upload', requireAuthentication, function (req, res) {
     console.log(req);
     if (typeof req.files === "undefined" || Object.keys(req.files).length == 0) {
-        return res.status(400).json({
-            status: "error",
-            msg: "No files were uploaded",
-            detail: "The request was send whthout files."
-        });
+        return res.status(400).send(`The request was send whithout files.`);
     }
 
     let requested_path = (typeof req.body.path === 'undefined') ? '/' : req.body.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.body.path.substr(req.body.path.length - 1) === '/' ? '' : '/');
@@ -64,35 +56,28 @@ app.post('/upload', requireAuthentication, function (req, res) {
         req.files.files.map((file) => {
             file.mv(FILES_PATH + requested_path + file.name, function (err) {
                 if (err) {
-                    res.status(500).json({
-                        status: "error",
-                        msg: "Fail to upload file",
-                        detail: "An error occured while uploading <code>" + req.files.files.map((e) => e.name) + "</code> in <code>" + requested_path + "</code>."
-                    });
+                    res.status(500).send(`An error occured while uploading <code>${req.files.files.map((e) => e.name)}</code> in <code>${requested_path}</code>.`);
                 }
             });
         }).then(() => {
             res.json({
-                status: "success",
-                msg: "Files successfully uploaded",
-                detail: "Files <code>" + req.files.files.map((e) => e.name) + "</code> were successfully uploaded in <code>" + requested_path + "</code>."
+                status: `success`,
+                msg: `Files successfully uploaded`,
+                detail: `Files <code>${req.files.files.map((e) => e.name)}</code> were successfully uploaded in <code>${requested_path}</code>.`
             });
         });
     } else {
         // Single upload
         req.files.files.mv(FILES_PATH + requested_path + req.files.files.name, function (err) {
-            if (err)
-                return res.status(500).json({
-                    status: "error",
-                    msg: "Fail to upload file",
-                    detail: "An error occured while uploading <code>" + req.files.files.name + "</code> in <code>" + requested_path + "</code>."
+            if (err) {
+                res.status(500).send(`An error occured while uploading <code>${req.files.files.name}</code> in <code>${requested_path}</code>.`);
+            } else {
+                res.json({
+                    status: "success",
+                    msg: "File successfully uploaded",
+                    detail: "The file <code>" + req.files.files.name + "</code> was successfully uploaded in <code>" + requested_path + "</code>."
                 });
-
-            res.json({
-                status: "success",
-                msg: "File successfully uploaded",
-                detail: "The file <code>" + req.files.files.name + "</code> was successfully uploaded in <code>" + requested_path + "</code>."
-            });
+            }
         });
     }
 });
@@ -103,11 +88,7 @@ app.post('/rename', requireAuthentication, function (req, res) {
 
     fs.rename(FILES_PATH + '/' + fileurl, FILES_PATH + '/' + newurl, function (err) {
         if (err) {
-            res.status(500).json({
-                "status": "error",
-                "msg": "Fail to rename file",
-                "detail": "An error occured while trying to rename <code>" + fileurl + "</code> into <code>" + newurl + "</code>."
-            });
+            res.status(500).send(`An error occured while trying to rename <code>${fileurl}</code> into <code>${newurl}</code>.`);
         } else {
             res.status(200).json({
                 "status": "success",
@@ -203,11 +184,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
             });
             break;
 
-        default: res.status(500).json({
-            "status": "error",
-            "msg": "Fail to render file",
-            "detail": "An error occured while trying to render <code>" + fileurl + "</code>. Mime <code>" + file_mime + "</code> not implemented."
-        });
+        default: res.status(500).send("An error occured while trying to render <code>" + fileurl + "</code>. Mime <code>" + file_mime + "</code> not implemented.");
     }
 });
 
@@ -217,18 +194,12 @@ app.post('/delete', requireAdminAuthentication, function (req, res) {
     files.map((path, index, array) => {
         fs.lstat(FILES_PATH + path, (err, stats) => {
             if (err) {
-                console.log(err);
-                return res.json({
-                    status: "error",
-                    msg: "Fail to delete files",
-                    detail: "An error occured while deleting some files."
-                });
+                return res.status(500).send("An error occured while deleting some files.");
             } else if (stats.isFile()) {
                 fs.unlinkSync(FILES_PATH + path);
             } else {
                 deleteFolderRecursive(FILES_PATH + path);
             }
-            console.log(index, array.length);
             if (index >= array.length - 1) {
                 return res.json({
                     status: "success",
@@ -260,11 +231,7 @@ app.post('/newfile', requireAuthentication, function (req, res) {
 
     fs.open(FILES_PATH + path + name, 'ax', (err) => {
         if (err) {
-            res.status(500).json({
-                "status": "error",
-                "msg": "Fail to create file",
-                "detail": "An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>."
-            });
+            res.status(500).send("An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>.");
         } else {
             res.status(200).json({
                 "status": "success",
@@ -281,11 +248,7 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
 
     fs.mkdir(FILES_PATH + path + name, { recursive: true }, (err) => {
         if (err) {
-            res.status(500).json({
-                "status": "error",
-                "msg": "Fail to create folder",
-                "detail": "An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>."
-            });
+            res.status(500).send("An error occured while trying to create <code>" + name + "</code> into <code>" + path + "</code>.");
         } else {
             res.status(200).json({
                 "status": "success",
@@ -299,7 +262,7 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
 app.get('/:endpoint', function (req, res) {
     res.render('cloud/api/index.html', { section: req.params.endpoint }, function (err, html) {
         if (err) {
-            return res.status(404).send('not found');
+            return res.status(404).send('No documentation found for <code>' + req.params.endpoint + "</code>");
         }
         res.send(html);
     });
@@ -312,7 +275,7 @@ function requireAuthentication(req, res, next) {
         return next();
 
     // if they aren't return 403
-    res.status(403).json({ "status": "error", "msg": "Access denied", "detail": "You must login to perform this action." });
+    res.status(401).send("You must login to perform this action.");
 }
 
 // route middleware to make sure a user is logged in as admin
@@ -324,7 +287,7 @@ function requireAdminAuthentication(req, res, next) {
         return next();
 
     // if they aren't return 403
-    res.status(403).json({ "status": "error", "msg": "Access denied", "detail": "You don't have required rights to perform this action." });
+    res.status(403).send("You don't have required rights to perform this action.");
 }
 
 module.exports = app

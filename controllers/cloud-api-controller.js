@@ -1,12 +1,13 @@
 var express = require('express');
 var mime = require('mime-types');
+const StreamZip = require('node-stream-zip');
 
 const fileUpload = require('express-fileupload');
 var app = express();
 app.use(fileUpload());
 
 const fs = require('fs');
-const FILES_PATH = "/mnt/f/Corentin/Documents/TESTS";
+const FILES_PATH = "C:/Users/X181539/Desktop";
 
 var nunjucks = require('nunjucks');
 nunjucks.configure('views', {
@@ -130,13 +131,15 @@ app.post('/preview', requireAuthentication, function (req, res) {
 
     switch (file_mime) {
         case 'application/zip':
-            const zip = new StreamZip({file: FILES_PATH + fileurl,storeEntries: true});
+            const zip = new StreamZip({ file: FILES_PATH + fileurl, storeEntries: true });
+            let array = [];
+            let contents = [];
             zip.on('ready', () => {
                 for (const entry of Object.values(zip.entries())) {
                     if (entry.isDirectory) {
                         let path = entry.name.slice(0, -1);
                         let splitname = path.split(/\/(?=[^\/]+$)/);
-            
+
                         // create dir obj
                         let dir = { name: splitname[splitname.length - 1], type: "dir", content: [] };
                         // save content attribute reference
@@ -145,15 +148,19 @@ app.post('/preview', requireAuthentication, function (req, res) {
                         splitname.length > 1 ? contents[splitname[0]].push(dir) : array.push(dir);
                     } else {
                         let splitname = entry.name.split(/\/(?=[^\/]+$)/);
-            
                         // create file obj
-                        let file = { name: splitname[splitname.length - 1], type: "file", size: 0 };
+                        let file = { name: splitname[splitname.length - 1], type: "file", size: entry.size, mtime: entry.time };
                         // add file obj to parent dir
                         splitname.length > 1 ? contents[splitname[0]].push(file) : array.push(file);
                     }
                 }
                 // Do not forget to close the file once you're done
-                zip.close()
+                zip.close();
+                res.status(200).json({
+                    "status": "success",
+                    "type": "zip",
+                    "content": array
+                });
             });
             break;
         case 'application/pdf':

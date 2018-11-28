@@ -111,6 +111,13 @@ app.post('/preview', requireAuthentication, function (req, res) {
     let file_mime = mime.lookup(FILES_PATH + '/' + fileurl);
 
     switch (file_mime) {
+        case 'image/png': case 'image/jpeg': case 'image/x-icon': case 'image/svg+xml': case 'image/tiff': case 'image/webp':
+            res.status(200).json({
+                "status": "success",
+                "type": "image",
+                "url": req.baseUrl + '/file?fileurl=' + fileurl
+            });
+            break;
         case 'application/zip':
             const zip = new StreamZip({ file: FILES_PATH + fileurl, storeEntries: true });
             let array = [];

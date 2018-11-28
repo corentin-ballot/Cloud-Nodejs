@@ -34,7 +34,7 @@ app.post('/browse', function (req, res) {
         res.json(
             files.map((file) => {
                 let file_stats = fs.statSync(FILES_PATH + requested_path + file);
-                return { name: file, url: requested_path + file, mtime: file_stats.mtime, size: file_stats.size, type: file_stats.isDirectory() ? 'dir' : 'file' };
+                return { name: file, url: requested_path + file, mtime: file_stats.mtimeMs, size: file_stats.isDirectory() ? undefined : file_stats.size, type: file_stats.isDirectory() ? 'dir' : 'file' };
             })
         );
     });

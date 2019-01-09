@@ -2,29 +2,31 @@
     min-width: 0;
     min-height: 0;
     width: 75%;
-    padding-top: 32px;
-    padding-left: 24px;
+    padding-top: 2rem;
+    padding-left: 1.5rem;
+    background-color: white;
+    min-height: 100%;
 }
 
 .api_sections_item {
-    border-radius: 3px;
-    padding: 0 0 0 24px;
+    border-radius: .1875rem;
+    padding: 0 0 0 1.5rem;
 }
 
 .api_sections h1, .api_sections h2  {
     margin-top: 0;
 }
 .api_sections h1 {
-    font-size: 1.5em;
+    font-size: 1.4rem;
 }
 .api_sections h2 {
-    font-size: 1.25em;
+    font-size: 1.3rem;
 }
 .api_sections h3 {
-    font-size: 1em;
+    font-size: 1.2rem;
 }
 .api_sections h4 {
-    font-size: .875em;
+    font-size: 1.1rem;
 }
 
 .api_container {
@@ -37,8 +39,8 @@
 }
 
 .api_navigation {
-    padding-top: 32px;
-    padding-left: 24px;
+    padding-top: 2rem;
+    padding-left: 1.5rem;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -51,7 +53,7 @@
 
 .api_navigation h1 {
     margin: 0;
-    padding: 0 4px .3em 4px;
+    padding: 0 .25rem .3rem;
     font-size: 100%;
     word-wrap: normal;
 }
@@ -76,7 +78,7 @@
 
 .api_navigation ul li a {
     display: block;
-    padding: 7px 24px 7px 16px;
+    padding: .5rem 1.5rem .5rem 1rem;
     color: unset;
 }
 

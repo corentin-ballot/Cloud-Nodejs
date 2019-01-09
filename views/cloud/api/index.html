@@ -29,6 +29,7 @@
     <div class="api_sections">
         {% if section === "introduction" %}
         <h1>Intoduction</h1>
+        <p>Documentation de l'API Cloud du site.</p>
         {% else %}
         <section class="api_sections_item">{% include "cloud/api/" + section + ".html" %}</section>
         {% endif %}

@@ -1,0 +1,55 @@
+.login_wrapper {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 3rem;
+    box-sizing: border-box;
+}
+
+.login {
+    border: .0625rem solid rgb(230, 236, 241);
+    padding: 1rem;
+    background-color: white;
+}
+
+.login h1 {
+    margin: 0 0 .5rem 0;
+    font-size: 1.4rem;
+}
+
+.login fieldset {
+    width: 100%;
+    min-width: 200px;
+    border: none;
+    margin: .2rem 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.login_field_id::before {
+    content: '👤';
+    filter: grayscale(100%);
+}
+
+.login_field_password::before {
+    content: '🔒';
+    filter: grayscale(100%);
+}
+
+.login_field_email::before {
+    content: '📧';
+    filter: grayscale(100%);
+}
+
+.login_submit {
+    float: right;
+}
+
+.login hr {
+    clear: both;
+}

@@ -12,6 +12,7 @@ app.use(express.static('public'));
 app.use('/', shareUserData, require('./controllers/security-controller'));
 app.use('/cloud', shareUserData, require('./controllers/cloud-controller'));
 app.use('/api/cloud', shareUserData, require('./controllers/cloud-api-controller'));
+app.use('/api/doc/cloud', shareUserData, require('./controllers/cloud-api-doc-controller'));
 
 
 app.get('/', shareUserData, function (req, res) {

@@ -1,20 +1,10 @@
 // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
 
-// var mysql = require('mysql');
+var crypto = require('crypto');
+var sqlite3 = require('sqlite3');
 
-// var connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: ''
-// });
-
-// connection.query('USE vidyawxx_build2');
-
-var users = [
-    { id: 0, email: 'admin', password: 'admin', role: ["ROLE_CLOUD_ADMIN"] },
-    { id: 1, email: 'test', password: 'test', role: [] },
-];
+var db = new sqlite3.Database('./config/sqlite.db');
 
 // expose this function to our app using module.exports
 module.exports = function (passport) {
@@ -32,7 +22,10 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        done(null, users.find((user) => user.id === id));
+        db.get('SELECT id, username FROM users WHERE id = ?', id, function (err, row) {
+            if (!row) return done(null, false);
+            return done(null, row);
+        });
     });
 
 
@@ -43,24 +36,22 @@ module.exports = function (passport) {
     // by default, if there was no name, it would just be called 'local'
 
     passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField: 'email',
+        usernameField: 'username',
         passwordField: 'password',
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
-        function (req, email, password, done) {
-            // return flash if user exist
-            if (typeof users.find((user) => user.email === email) !== "undefined") {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-            }
-
-            // create user if does not
-            else {
-                let user = { id: users.length, email: email, password: password };
-                users.push(user);
-                return done(null, user);
-            }
-        }));
+        function (req, username, password, done) {
+            db.get('SELECT * FROM users WHERE username = ?', username, function (err, row) {
+                if (row) return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+                var salt = Date.now().toString();
+                var hash = hashPassword(password, salt);
+                db.run('INSERT INTO users (username, password, salt, enable) VALUES (?, ?, ?, ?)', username, hash, salt, 0, function (err, row) {
+                    if (err) return done(null, false, err.message);
+                    return done(null, row);
+                });
+            });
+        }
+    ));
 
     // =========================================================================
     // LOCAL LOGIN =============================================================
@@ -69,24 +60,27 @@ module.exports = function (passport) {
     // by default, if there was no name, it would just be called 'local'
 
     passport.use('local-login', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField: 'email',
+        usernameField: 'username',
         passwordField: 'password',
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
-        function (req, email, password, done) { // callback with email and password from our form
+        function (req, username, password, done) { // callback with email and password from our form
+            db.get('SELECT salt FROM users WHERE username = ?', username, function (err, row) {
+                if (!row) return done(null, false, req.flash('loginMessage', 'User not found.'));
+                var hash = hashPassword(password, row.salt);
+                db.get('SELECT username, id FROM users WHERE username = ? AND password = ?', username, hash, function (err, row) {
+                    if (!row) return done(null, false, 'Wrong password.');
+                    return done(null, row);
+                });
+            });
+        }
+    ));
 
-            if (typeof users.find((user) => user.email === email) === undefined) {
-                return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-            }
-
-            // if the user is found but the password is wrong
-            else if (typeof users.find((user) => (user.email === email && user.password === password)) === undefined) {
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-            }
-
-            // all is well, return successful user
-            return done(null, users.find((user) => (user.email === email && user.password === password)));
-        }));
+    function hashPassword(password, salt) {
+        var hash = crypto.createHash('sha256');
+        hash.update(password);
+        hash.update(salt);
+        return hash.digest('hex');
+    }
 
 };

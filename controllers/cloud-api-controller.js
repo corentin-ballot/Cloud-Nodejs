@@ -9,18 +9,6 @@ app.use(fileUpload());
 const fs = require('fs');
 const FILES_PATH = "C:/Users/X181539/Desktop";
 
-var nunjucks = require('nunjucks');
-nunjucks.configure('views', {
-    autoescape: true,
-    express: app
-});
-
-app.get('/', function (req, res) {
-    res.render('cloud/api/index.html', {
-        section: "introduction",
-    });
-})
-
 app.post('/browse', function (req, res) {
     let requested_path = (typeof req.query.path === 'undefined') ? '/' : req.query.path.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.path.substr(req.query.path.length - 1) === '/' ? '' : '/');
 
@@ -162,16 +150,6 @@ app.post('/preview', requireAuthentication, function (req, res) {
             });
             break;
 
-        case 'text/plain': case 'inode/x-empty': case 'text/x-c':
-            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
-                res.status(200).json({
-                    "status": "success",
-                    "type": "text",
-                    "content": data
-                });
-            });
-            break;
-
         case 'text/markdown':
             fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
@@ -192,7 +170,29 @@ app.post('/preview', requireAuthentication, function (req, res) {
             });
             break;
 
-        default: res.status(500).send("An error occured while trying to render <code>" + fileurl + "</code>. Mime <code>" + file_mime + "</code> not implemented.");
+        case 'inode/x-empty': case 'application/xml':
+            fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                res.status(200).json({
+                    "status": "success",
+                    "type": "text",
+                    "content": data
+                });
+            });
+            break;
+
+        default:
+            if (file_mime.startsWith('text/')) {
+                fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
+                    res.status(200).json({
+                        "status": "success",
+                        "type": "text",
+                        "content": data
+                    });
+                });
+                break;
+            } else {
+                res.status(500).send("An error occured while trying to render <code>" + fileurl + "</code>. Mime <code>" + file_mime + "</code> not implemented.");
+            }
     }
 });
 
@@ -267,20 +267,11 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
     });
 });
 
-app.get('/:endpoint', function (req, res) {
-    res.render('cloud/api/index.html', { section: req.params.endpoint }, function (err, html) {
-        if (err) {
-            return res.status(404).send('No documentation found for <code>' + req.params.endpoint + "</code>");
-        }
-        res.send(html);
-    });
-})
-
 // route middleware to make sure a user is logged in
 function requireAuthentication(req, res, next) {
 
-    if (req.isAuthenticated())
-        return next();
+    //if (req.isAuthenticated())
+    return next();
 
     // if they aren't return 403
     res.status(401).send("You must login to perform this action.");

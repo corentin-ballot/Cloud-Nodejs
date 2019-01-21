@@ -19,10 +19,11 @@
 
         <!-- LOGIN FORM -->
         <form action="/login" method="post">
-            <fieldset class="login_field_id">
+            <input type="hidden" name="register" value="false">
+            <fieldset class="login_field -id">
                 <input type="text" name="username" placeholder="Login">
             </fieldset>
-            <fieldset class="login_field_password">
+            <fieldset class="login_field -password">
                 <input type="password" name="password" placeholder="Password">
             </fieldset>
 
@@ -31,7 +32,7 @@
 
         <hr>
 
-        <p>Need an account? <a href="/signup">Register</a></p>
+        <p>Need an account? <a href="/register">Register</a></p>
 
     </div>
 

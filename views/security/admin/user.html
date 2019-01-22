@@ -1,33 +1,62 @@
-{% set title = 'Cloud API' %}
+{% set title = 'Dashboard - user' %}
 {% extends "layout.html" %}
 
 {% block head %}
-
+<link rel="stylesheet" href="/security/admin.css">
 {% endblock %}
 
 {% block body %}
-<div>
-    <table>
-        <tr>
-            <th>id</th>
-            <td>{{ userinfo.id }}</td>
+<div class="admin_user_container">
+    <table class="admin_user_table">
+        <tr class="admin_user_table__row">
+            <th class="admin_user_table__row__col">id</th>
+            <td class="admin_user_table__row__col">{{ userinfo.id }}</td>
+            <td class="admin_user_table__row__col"></td>
         </tr>
-        <tr>
-            <th>username</th>
-            <td>{{ userinfo.username }}</td>
+        <tr class="admin_user_table__row">
+            <form action="/admin/user/{{ userinfo.id }}/update-username" method="POST">
+                <th class="admin_user_table__row__col">username</th>
+                <td class="admin_user_table__row__col">
+                    <input type="text" name="username" value="{{ userinfo.username }}" > 
+                </td>
+                <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
+            </form>
         </tr>
-        <tr>
-            <th>email</th>
-            <td>{{ userinfo.email }}</td>
+        <tr class="admin_user_table__row">
+            <form action="/admin/user/{{ userinfo.id }}/update-email" method="POST">
+                <th class="admin_user_table__row__col">email</th>
+                <td class="admin_user_table__row__col">
+                    <input type="text" name="email" value="{{ userinfo.email }}" > 
+                </td>
+                <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
+            </form>
         </tr>
-        <tr>
-            <th>roles</th>
-            <td>{{ userinfo.roles }}</td>
+        <tr class="admin_user_table__row">
+            <form action="/admin/user/{{ userinfo.id }}/update-roles" method="POST">
+                <th class="admin_user_table__row__col">roles</th>
+                <td class="admin_user_table__row__col">
+                    <input type="text" name="roles" value="{{ userinfo.roles }}" > 
+                </td>
+                <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
+            </form>
         </tr>
-        <tr>
-            <th>enable</th>
-            <td>{{ userinfo.enable }}</td>
+        <tr class="admin_user_table__row">
+            <form action="/admin/user/{{ userinfo.id }}/update-enable" method="POST">
+                <th class="admin_user_table__row__col">enable</th>
+                <td class="admin_user_table__row__col">
+                    <input type="checkbox" name="enable" checked="{{ userinfo.enable === 1 }}" > 
+                </td>
+                <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
+            </form>
         </tr>
     </table>
+
+    <div>
+            
+            
+            
+            
+
+    </div>
 </div>
 {% endblock %}

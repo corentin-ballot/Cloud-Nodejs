@@ -1,0 +1,56 @@
+/* USERS */
+
+.admin_users_container {
+    padding: 1rem;
+}
+
+.admin_users_table {
+    width: 100%;
+    text-align: left;
+    margin: 0 auto;
+
+    border-spacing: 0 .5rem;
+}
+
+.admin_users_table__row.-header {
+    position: sticky;
+    top: 0;
+}
+
+.admin_users_table__row {
+    height: 3rem;
+    box-shadow: 0 .125rem .125rem 0 rgba(0,0,0,.14),0 .1875rem .0625rem -.125rem rgba(0,0,0,.2),0 .0625rem .1875rem 0 rgba(0,0,0,.12);
+    background-color: #FFF;
+}
+
+.admin_users_table__row__col {
+    padding: .5rem 1rem;
+}
+
+.admin_users_table__row__col.-enable {
+    text-align: right;
+}
+
+/* USER */
+
+.admin_user_container {
+    padding: 1rem;
+
+}
+
+.admin_user_table {
+    text-align: left;
+
+    border-spacing: 0 .5rem;
+    margin: 0 auto;
+}
+
+.admin_user_table__row {
+    height: 3rem;
+    box-shadow: 0 .125rem .125rem 0 rgba(0,0,0,.14),0 .1875rem .0625rem -.125rem rgba(0,0,0,.2),0 .0625rem .1875rem 0 rgba(0,0,0,.12);
+    background-color: #FFF;
+}
+
+.admin_user_table__row__col {
+    padding: .5rem 1rem;
+}

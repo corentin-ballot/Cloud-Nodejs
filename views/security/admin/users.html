@@ -1,25 +1,25 @@
-{% set title = 'Cloud API' %}
+{% set title = 'Dashboard - Users' %}
 {% extends "layout.html" %}
 
 {% block head %}
-
+<link rel="stylesheet" href="/security/admin.css">
 {% endblock %}
 
 {% block body %}
-<div>
-    <table>
-        <tr>
-            <th>username</th>
-            <th>email</th>
-            <th>roles</th>
-            <th>enable</th>
+<div class="admin_users_container">
+    <table class="admin_users_table">
+        <tr class="admin_users_table__row -header">
+            <th class="admin_users_table__row__col -username">username</th>
+            <th class="admin_users_table__row__col -email">email</th>
+            <th class="admin_users_table__row__col -roles">roles</th>
+            <th class="admin_users_table__row__col -enable">enable</th>
         </tr>
         {% for user in users %}
-        <tr>
-            <td><a href="/admin/user/{{ user.id }}#username">{{ user.username }}</a></td>
-            <td><a href="/admin/user/{{ user.id }}#email">{{ user.email }}</a></td>
-            <td><a href="/admin/user/{{ user.id }}#roles">{{ user.roles }}</a></td>
-            <td><a href="/admin/user/{{ user.id }}#enable">{{ user.enable }}</a></td>
+        <tr class="admin_users_table__row">
+            <td class="admin_users_table__row__col -username"><a href="/admin/user/{{ user.id }}">{{ user.username }}</a></td>
+            <td class="admin_users_table__row__col -email"><a href="/admin/user/{{ user.id }}">{{ user.email }}</a></td>
+            <td class="admin_users_table__row__col -roles"><a href="/admin/user/{{ user.id }}">{{ user.roles }}</a></td>
+            <td class="admin_users_table__row__col -enable"><a href="/admin/user/{{ user.id }}">{{ user.enable }}</a></td>
         </tr>
         {% endfor %}
     </table>

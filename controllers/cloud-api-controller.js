@@ -270,8 +270,8 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
 // route middleware to make sure a user is logged in
 function requireAuthentication(req, res, next) {
 
-    if (req.isAuthenticated())
-        return next();
+    //if (req.isAuthenticated())
+    return next();
 
     // if they aren't return 403
     res.status(401).send("You must login to perform this action.");

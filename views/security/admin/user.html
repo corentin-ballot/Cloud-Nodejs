@@ -1,0 +1,33 @@
+{% set title = 'Cloud API' %}
+{% extends "layout.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div>
+    <table>
+        <tr>
+            <th>id</th>
+            <td>{{ userinfo.id }}</td>
+        </tr>
+        <tr>
+            <th>username</th>
+            <td>{{ userinfo.username }}</td>
+        </tr>
+        <tr>
+            <th>email</th>
+            <td>{{ userinfo.email }}</td>
+        </tr>
+        <tr>
+            <th>roles</th>
+            <td>{{ userinfo.roles }}</td>
+        </tr>
+        <tr>
+            <th>enable</th>
+            <td>{{ userinfo.enable }}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

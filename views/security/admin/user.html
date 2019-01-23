@@ -17,7 +17,7 @@
             <form action="/admin/user/{{ userinfo.id }}/update-username" method="POST">
                 <th class="admin_user_table__row__col">username</th>
                 <td class="admin_user_table__row__col">
-                    <input type="text" name="username" value="{{ userinfo.username }}" > 
+                    <input type="text" name="username" value="{{ userinfo.username }}">
                 </td>
                 <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
             </form>
@@ -26,7 +26,7 @@
             <form action="/admin/user/{{ userinfo.id }}/update-email" method="POST">
                 <th class="admin_user_table__row__col">email</th>
                 <td class="admin_user_table__row__col">
-                    <input type="text" name="email" value="{{ userinfo.email }}" > 
+                    <input type="text" name="email" value="{{ userinfo.email }}">
                 </td>
                 <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
             </form>
@@ -35,7 +35,7 @@
             <form action="/admin/user/{{ userinfo.id }}/update-roles" method="POST">
                 <th class="admin_user_table__row__col">roles</th>
                 <td class="admin_user_table__row__col">
-                    <input type="text" name="roles" value="{{ userinfo.roles }}" > 
+                    <input type="text" name="roles" value="{{ userinfo.roles }}">
                 </td>
                 <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
             </form>
@@ -44,18 +44,28 @@
             <form action="/admin/user/{{ userinfo.id }}/update-enable" method="POST">
                 <th class="admin_user_table__row__col">enable</th>
                 <td class="admin_user_table__row__col">
-                    <input type="checkbox" name="enable" checked="{{ userinfo.enable === 1 }}" > 
+                    <input type="checkbox" name="enable" checked="{{ userinfo.enable === 1 }}">
                 </td>
                 <td class="admin_user_table__row__col"><input type="submit" value="update"></td>
             </form>
         </tr>
+        <tr class="admin_user_table__row -footer">
+            <form action="/admin/user/{{ userinfo.id }}/delete-user" method="POST">
+                <td colspan="3" class="admin_user_table__row__col">
+                    <a href="/admin/users" class="admin_user__btn">back</a>
+                    <input class="admin_user__btn -danger" type="submit" value="delete">
+                </td>
+            </form>
+        </tr>
     </table>
 
+
+
     <div>
-            
-            
-            
-            
+
+
+
+
 
     </div>
 </div>

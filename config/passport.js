@@ -43,20 +43,17 @@ module.exports = function (passport) {
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
         function (req, username, password, done) { // callback with email and password from our form
-            console.log("req.body.register", req.body.register, (req.body.register === true) ? "register" : "login");
-            if (req.body.register === true) register(req, username, password, done);
+            if (req.body.register === 'true') register(req, username, password, done);
             else login(req, username, password, done);
         }
     ));
 
     function register(req, username, password, done) {
         db.get('SELECT * FROM users WHERE username = ?', username, function (err, row) {
-            console.log(row, err);
             if (row) return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
             var salt = Date.now().toString();
             var hash = hashPassword(password, salt);
             db.run('INSERT INTO users (username, password, email, salt, roles, enable) VALUES (?, ?, ?, ?, ?, ?)', username, hash, req.body.email, salt, DEFAULT_ROLES, DEFAULT_ENABLE, function (err, row) {
-                console.log(row, err);
                 if (err) return done(null, false, err.message);
                 return done(null, row);
             });
@@ -65,11 +62,9 @@ module.exports = function (passport) {
 
     function login(req, username, password, done) { // callback with email and password from our form
         db.get('SELECT salt, enable FROM users WHERE username = ?', username, function (err, row) {
-            console.log(row, err);
             if (!row) return done(null, false, req.flash('loginMessage', 'User not found.'));
             var hash = hashPassword(password, row.salt);
             db.get('SELECT username, id FROM users WHERE username = ? AND password = ?', username, hash, function (err, row) {
-                console.log(row, err);
                 if (!row) return done(null, false, 'Wrong password.');
                 else if (row.enable < 1) return done(null, false, req.flash('loginMessage', 'Your account is not enable yet or have been disabled.'));
                 else return done(null, row);

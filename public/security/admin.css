@@ -51,6 +51,38 @@
     background-color: #FFF;
 }
 
+.admin_user_table__row.-footer {
+    background-color: none;
+    box-shadow: none;
+    text-align: center;
+}
+
 .admin_user_table__row__col {
     padding: .5rem 1rem;
+}
+
+.admin_user__btn {
+    padding: .5rem 1rem;
+    background-color: #e0eefc;
+    border: solid 2px #bdbfc1;
+    border-radius: .25rem;
+    text-decoration: none;
+    cursor: pointer;
+    color: #000;
+}
+
+.admin_user__btn:hover {
+    background-color: #bdbfc1;
+    border: solid 2px #e0eefc;
+}
+
+.admin_user__btn.-danger {
+    background-color: #d73a49;
+    border: solid 2px #b71a29;
+    color: #FFF;
+}
+
+.admin_user__btn.-danger:hover {
+    background-color: #b71a29;
+    border: solid 2px #d73a49;
 }

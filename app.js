@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 
+var security = require('./helpers/security');
+
 var nunjucks = require('nunjucks');
 
 nunjucks.configure('views', {
@@ -10,6 +12,7 @@ nunjucks.configure('views', {
 
 app.use(express.static('public'));
 app.use('/', shareUserData, require('./controllers/security-controller'));
+app.use('/admin', shareUserData, security.requireRole(security.ROLES.ADMIN), require('./controllers/security-admin-controller'));
 app.use('/cloud', shareUserData, require('./controllers/cloud-controller'));
 app.use('/api/cloud', shareUserData, require('./controllers/cloud-api-controller'));
 app.use('/api/doc/cloud', shareUserData, require('./controllers/cloud-api-doc-controller'));

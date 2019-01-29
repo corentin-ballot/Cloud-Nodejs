@@ -88,7 +88,7 @@ app.post('/rename', requireAuthentication, function (req, res) {
 });
 
 app.get('/file', requireAuthentication, function (req, res) {
-    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/').concat(req.query.fileurl.substr(req.query.fileurl.length - 1) === '/' ? '' : '/');
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
 
     res.setHeader("content-type", mime.lookup(FILES_PATH + fileurl));
     fs.createReadStream(FILES_PATH + fileurl).pipe(res);

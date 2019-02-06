@@ -267,6 +267,22 @@ app.post('/newfolder', requireAuthentication, function (req, res) {
     });
 });
 
+app.post('/savetextfile', requireAuthentication, function (req, res) {
+    let fileurl = req.query.fileurl.replace(/\.\./g, '').replace(/[\/]+/g, '/');
+
+    fs.writeFile(fileurl, req.query.content, 'utf8', (err) => {
+        if (err) {
+            res.status(500).send("An error occured while trying to save <code>" + fileurl + "</code>.");
+        } else {
+            res.status(200).json({
+                "status": "success",
+                "msg": "File successfully saved",
+                "detail": "<code>" + fileurl + "</code> was successfully saved."
+            });
+        }
+    });
+});
+
 // route middleware to make sure a user is logged in
 function requireAuthentication(req, res, next) {
 

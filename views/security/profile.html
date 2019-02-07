@@ -1,35 +1,101 @@
 {% set title = 'Profile' %}
 {% extends "layout.html" %}
 
-{% block head %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="/security/profile.css">
+<link rel="stylesheet" href="/components/tabbar/tabbar.css">
+<script src="/components/tabbar/tabbar.js"></script>
+<link rel="stylesheet" href="/components/form/form.css">
+<script src="/components/form/form.js"></script>
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+
+<div class="profile-header">
+    <div class="profile-image">
+        <img src="/superman.png" alt="profile image">
     </div>
-    <div class="row">
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-                <p>
-                    <strong>id</strong>:
-                    {{ user.id }}<br>
-                    <strong>username</strong>:
-                    {{ user.username }}<br>
-                    <strong>email</strong>:
-                    {{ user.email }}<br>
-                    <strong>roles</strong>:
-                    {{ user.roles }}<br>
-                    <strong>enable</strong>:
-                    {{ user.enable }}<br>
-                    <strong>password</strong>:
-                    {{ user.password }}
-                </p>
+
+    <div class="profile-username">{{ user.username }}</div>
+</div>
+
+<div class="profile-forms">
+    <div class="tab-bar">
+        <a href="#tab-overview" class="tab-bar_tab" aria-expanded="true">
+            <span class="tab-bar_tab-text">Overview</span>
+        </a>
+        <a href="#tab-password" class="tab-bar_tab" aria-expanded="false">
+            <span class="tab-bar_tab-text">Change
+                password</span>
+        </a>
+        <a href="#tab-email" class="tab-bar_tab" aria-expanded="false">
+            <span class="tab-bar_tab-text">Change Email</span>
+        </a>
+    </div>
+
+    <section class="tab-bar_panel" id="tab-overview" aria-hidden="false">
+        <table class="profile-overview_table">
+            <tr>
+                <th>id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>eamil</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>roles</th>
+                <td>{{ user.roles }}</td>
+            </tr>
+            <tr>
+                <th>enable</th>
+                <td>{{ user.enable }}</td>
+            </tr>
+            <tr>
+                <th>password</th>
+                <td>{{ user.password }}</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="tab-bar_panel" id="tab-password" aria-hidden="true">
+        <form class="profile-password">
+            <div class="input-text">
+                <div class="input-text_wrapper">
+                    <input type="password" name="password" id="current-password" />
+                    <label for="current-password">Current password</label>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="input-text">
+                <div class="input-text_wrapper">
+                    <input type="password" name="new-password" id="new-password" />
+                    <label for="new-password">New password</label>
+                </div>
+            </div>
+            <input type="submit" />
+        </form>
+    </section>
+
+    <section class="tab-bar_panel" id="tab-email" aria-hidden="true">
+        <form class="profile-password">
+            <div class="input-text">
+                <div class="input-text_wrapper">
+                    <input type="email" name="email" id="email" />
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="input-text">
+                <div class="input-text_wrapper">
+                    <input type="password" name="password" id="password" />
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <input type="submit" />
+        </form>
+    </section>
 </div>
 {% endblock %}

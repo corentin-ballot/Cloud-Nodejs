@@ -1,0 +1,42 @@
+.tab-bar {
+    display: flex;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.tab-bar_tab {
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    padding: .5rem;
+    border-right: 1px solid rgb(209, 209, 209);
+    width: 100%;
+}
+
+.tab-bar_tab:last-child {
+    border: none;
+}
+
+.tab-bar_tab:hover {
+    background-color: #00000005;
+}
+
+.tab-bar_tab[aria-expanded="true"] .tab-bar_tab-text {
+    border-bottom: 2px blue solid;
+    opacity: 1;
+}
+
+.tab-bar_tab-text {
+    opacity: .3;
+}
+
+.tab-bar_panel {
+    opacity: 1;
+    transition: opacity 0.2s linear;
+    overflow: hidden;
+}
+
+.tab-bar_panel[aria-hidden="true"] {
+    opacity: 0;
+    height: 0;
+}

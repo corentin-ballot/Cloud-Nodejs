@@ -170,7 +170,7 @@ app.post('/preview', requireAuthentication, function (req, res) {
             });
             break;
 
-        case 'inode/x-empty': case 'application/xml':
+        case 'inode/x-empty': case 'application/xml': case 'application/json': case 'false':
             fs.readFile(FILES_PATH + fileurl, { encoding: 'utf-8' }, function (err, data) {
                 res.status(200).json({
                     "status": "success",

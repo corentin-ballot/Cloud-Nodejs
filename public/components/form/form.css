@@ -1,0 +1,55 @@
+.input-text {
+    padding: 1rem 0;
+    overflow: visible;
+    position: relative;
+} 
+
+.input-text_wrapper {
+    width: 100%;
+    position: relative;
+    overflow: visible;
+    border-bottom: 1px solid #00000020;
+}
+
+.input-text .input-text_wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background-color: blue;
+    z-index: 99;
+    width: 0;
+    transition: width .2s ease;
+}
+
+.input-text.focus .input-text_wrapper::after {
+    width: 100%;
+} 
+
+.input-text input {
+    border: none;
+    width: 100%;
+    box-shadow: none;
+}
+
+.input-text label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: top .5s ease, font-size .5s ease;
+}
+
+.input-text input:focus + label {
+    position: absolute;
+    font-size: .75em;
+    top: -.8rem;
+    left: 0;
+}
+
+.input-text input[data-empty="false"] + label {
+    position: absolute;
+    font-size: .75em;
+    top: -.8rem;
+    left: 0;
+}

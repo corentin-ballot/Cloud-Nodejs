@@ -63,7 +63,7 @@
     </section>
 
     <section class="tab-bar_panel" id="tab-password" aria-hidden="true">
-        <form class="profile-password">
+        <form class="profile-password" method="POST" action="/profile/update-password">
             <div class="input-text">
                 <div class="input-text_wrapper">
                     <input type="password" name="password" id="current-password" />
@@ -81,7 +81,7 @@
     </section>
 
     <section class="tab-bar_panel" id="tab-email" aria-hidden="true">
-        <form class="profile-password">
+        <form class="profile-email" method="POST" action="/profile/update-email">
             <div class="input-text">
                 <div class="input-text_wrapper">
                     <input type="email" name="email" id="email" />

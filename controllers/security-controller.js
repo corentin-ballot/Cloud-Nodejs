@@ -47,12 +47,6 @@ app.post('/register', passport.authenticate('local-login', {
     failureFlash: true // allow flash messages
 }));
 
-app.get('/profile', isLoggedIn, function (req, res) {
-    res.render('security/profile.html', {
-        user: req.user // get the user out of session and pass to template
-    });
-});
-
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
